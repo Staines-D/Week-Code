@@ -1,0 +1,30 @@
+function solution(D) {
+  const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const result = {};
+  
+  Object.keys(D).forEach(key => {
+    const date = new Date(key);
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    if (!result[dayOfWeek]) {
+      result[dayOfWeek] = [];
+    }
+    result[dayOfWeek].push(D[key]);
+  });
+  
+  const sortedDaysOfWeek = daysOfWeek.slice(date.getDay()).concat(daysOfWeek.slice(0, date.getDay()));
+
+  let prevDaySum = null;
+  sortedDaysOfWeek.forEach(day => {
+    if (result[day]) {
+      prevDaySum = result[day].reduce((acc, val) => acc + val, 0);
+      result[day] = prevDaySum;
+    } 
+    else if (prevDaySum !== null) {
+      const nextDay = sortedDaysOfWeek.find(d => result[d]);
+      const nextDaySum = result[nextDay];
+      result[day] = Math.round((prevDaySum + nextDaySum) / 2);
+    }
+  });
+  
+  return result;
+}
